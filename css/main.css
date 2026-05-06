@@ -65,3 +65,18 @@ button { cursor: pointer; font-family: var(--font-sans); border: none; backgroun
 input, select, textarea { font-family: var(--font-sans); }
 a { color: inherit; text-decoration: none; }
 .hidden { display: none !important; }
+
+/* Lucide icons */
+[data-lucide] { display: inline-block; vertical-align: middle; }
+.btn [data-lucide]          { width: 15px; height: 15px; }
+.navbar__logo [data-lucide] { width: 22px; height: 22px; }
+.navbar__back [data-lucide] { width: 15px; height: 15px; }
+.search-icon [data-lucide]  { width: 16px; height: 16px; }
+.view-btn [data-lucide]     { width: 18px; height: 18px; }
+.chip [data-lucide]         { width: 13px; height: 13px; }
+.toggle [data-lucide]       { width: 13px; height: 13px; }
+.stat-card__icon [data-lucide]  { width: 22px; height: 22px; }
+.detail-stat__icon [data-lucide]{ width: 22px; height: 22px; }
+.modal__close [data-lucide]     { width: 18px; height: 18px; }
+.cover-upload__label [data-lucide] { width: 13px; height: 13px; }
+.empty-state__icon [data-lucide]   { width: 52px; height: 52px; color: var(--gray-300); }

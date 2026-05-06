@@ -35,9 +35,11 @@ const loadGames = async () => {
 
   paginationContainer.innerHTML = '';
   const nav = renderPagination(data.page, data.totalPages);
-  nav.querySelector('#prev').addEventListener('click', () => { state.data.page--; loadGames(); });
-  nav.querySelector('#next').addEventListener('click', () => { state.data.page++; loadGames(); });
+  nav.querySelector('#prev').addEventListener('click', () => { state.page--; loadGames(); });
+  nav.querySelector('#next').addEventListener('click', () => { state.page++; loadGames(); });
   paginationContainer.appendChild(nav);
+
+  lucide.createIcons();
 };
 
 let timer;

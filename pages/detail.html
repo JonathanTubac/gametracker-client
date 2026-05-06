@@ -17,13 +17,13 @@
   <!-- NAVBAR -->
   <header class="navbar">
     <div class="navbar__brand">
-      <a href="/" class="navbar__back">← Volver</a>
-      <div class="navbar__logo">🎮</div>
+      <a href="/" class="navbar__back"><i data-lucide="arrow-left"></i> Volver</a>
+      <div class="navbar__logo"><i data-lucide="gamepad-2"></i></div>
       <span class="navbar__title">GameTracker</span>
     </div>
     <nav class="navbar__actions">
-      <button class="btn btn--ghost btn--sm" id="btn-edit">✏️ Editar</button>
-      <button class="btn btn--danger btn--sm" id="btn-delete">🗑️ Eliminar</button>
+      <button class="btn btn--ghost btn--sm" id="btn-edit"><i data-lucide="pencil"></i> Editar</button>
+      <button class="btn btn--danger btn--sm" id="btn-delete"><i data-lucide="trash-2"></i> Eliminar</button>
     </nav>
   </header>
 
@@ -57,28 +57,28 @@
       <!-- STATS ROW -->
       <div class="detail-stats">
         <div class="detail-stat">
-          <span class="detail-stat__icon">⏱️</span>
+          <span class="detail-stat__icon"><i data-lucide="clock"></i></span>
           <div>
             <p class="detail-stat__value" id="detail-hours">—</p>
             <p class="detail-stat__label">Horas jugadas</p>
           </div>
         </div>
         <div class="detail-stat">
-          <span class="detail-stat__icon">📅</span>
+          <span class="detail-stat__icon"><i data-lucide="calendar"></i></span>
           <div>
             <p class="detail-stat__value" id="detail-year">—</p>
             <p class="detail-stat__label">Año</p>
           </div>
         </div>
         <div class="detail-stat">
-          <span class="detail-stat__icon">🖥️</span>
+          <span class="detail-stat__icon"><i data-lucide="monitor"></i></span>
           <div>
             <p class="detail-stat__value" id="detail-platform">—</p>
             <p class="detail-stat__label">Plataforma</p>
           </div>
         </div>
         <div class="detail-stat">
-          <span class="detail-stat__icon">🏷️</span>
+          <span class="detail-stat__icon"><i data-lucide="tag"></i></span>
           <div>
             <p class="detail-stat__value" id="detail-genre">—</p>
             <p class="detail-stat__label">Género</p>
@@ -113,8 +113,8 @@
             rows="3"
           ></textarea>
           <div class="rating-form__actions">
-            <button class="btn btn--outline btn--sm" id="btn-delete-rating">Quitar rating</button>
-            <button class="btn btn--primary btn--sm" id="btn-save-rating">Guardar rating</button>
+            <button class="btn btn--outline btn--sm" id="btn-delete-rating"><i data-lucide="trash-2"></i> Quitar rating</button>
+            <button class="btn btn--primary btn--sm" id="btn-save-rating"><i data-lucide="save"></i> Guardar rating</button>
           </div>
         </div>
       </div>
@@ -122,12 +122,12 @@
     </div>
   </div>
 
-  <!-- EDIT MODAL (reutiliza el mismo del index) -->
+  <!-- EDIT MODAL -->
   <div class="modal-overlay hidden" id="modal-overlay">
     <div class="modal">
       <div class="modal__header">
         <h2 class="modal__title">Editar juego</h2>
-        <button class="modal__close" id="modal-close">✕</button>
+        <button class="modal__close" id="modal-close"><i data-lucide="x"></i></button>
       </div>
       <form class="modal__form" id="game-form">
         <input type="hidden" id="form-id" />
@@ -135,7 +135,7 @@
         <div class="form-row">
           <div class="cover-upload">
             <img id="cover-preview" src="/assets/placeholder.png" alt="Portada" />
-            <label class="cover-upload__label" for="form-image">📷 Cambiar</label>
+            <label class="cover-upload__label" for="form-image"><i data-lucide="camera"></i> Cambiar</label>
             <input type="file" id="form-image" accept="image/*" class="hidden" />
           </div>
           <div class="form-fields">
@@ -174,11 +174,11 @@
         <div class="form-group">
           <label class="form-label">Estado</label>
           <select class="input input--select" id="form-status">
-            <option value="backlog">📦 Backlog</option>
-            <option value="playing">🕹️ Jugando</option>
-            <option value="completed">✅ Completado</option>
-            <option value="dropped">❌ Dropped</option>
-            <option value="wishlist">⭐ Wishlist</option>
+            <option value="backlog">Backlog</option>
+            <option value="playing">Jugando</option>
+            <option value="completed">Completado</option>
+            <option value="dropped">Dropped</option>
+            <option value="wishlist">Wishlist</option>
           </select>
         </div>
 
@@ -200,6 +200,7 @@
     <span id="toast-message"></span>
   </div>
 
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script type="module" src="/js/detail.js"></script>
 </body>
 </html>

@@ -1,6 +1,7 @@
 import {
     getGameById, updateGame, deleteGame,
     getRating, upsertRating, deleteRating,
+    uploadImage,
 } from './api.js';
 
 const params = new URLSearchParams(window.location.search);
@@ -39,28 +40,31 @@ const toast = document.getElementById('toast');
 const toastMessage = document.getElementById('toast-message');
 
 const STATUS_LABELS = {
-    playing: '🕹️ Jugando',
-    completed: '✅ Completado',
-    backlog: '📦 Backlog',
-    dropped: '❌ Dropped',
-    wishlist: '⭐ Wishlist',
+    playing: 'Jugando',
+    completed: 'Completado',
+    backlog: 'Backlog',
+    dropped: 'Dropped',
+    wishlist: 'Wishlist',
 };
 
 let currentGame = null;
 
 const loadGame = async () => {
     try {
+        console.log(gameId)
         const [game, rating] = await Promise.all([
             getGameById(gameId),
             getRating(gameId),
         ]);
-
+        console.log(game)
+        console.log(rating)
         currentGame = game;
         renderGame(game);
         renderRating(rating);
 
         detailLoading.classList.add('hidden');
         detailContent.classList.remove('hidden');
+        lucide.createIcons();
     } catch (err) {
         detailLoading.innerHTML = `
       <p style="color:var(--gray-500)">No se pudo cargar el juego.</p>
@@ -140,6 +144,7 @@ document.getElementById('btn-save-rating').addEventListener('click', async () =>
             review: ratingReview.value.trim(),
         });
         renderRating(rating);
+        lucide.createIcons();
         showToast('Rating guardado', 'success');
     } catch (err) {
         showToast(err.message, 'error');
@@ -151,6 +156,7 @@ document.getElementById('btn-delete-rating').addEventListener('click', async () 
     try {
         await deleteRating(gameId);
         renderRating(null);
+        lucide.createIcons();
         showToast('Rating eliminado', 'success');
     } catch (err) {
         showToast(err.message, 'error');
@@ -208,20 +214,30 @@ formImage.addEventListener('change', (e) => {
 gameForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const fd = new FormData();
-    fd.append('title', document.getElementById('form-title').value.trim());
-    fd.append('developer', document.getElementById('form-developer').value.trim());
-    fd.append('genre', document.getElementById('form-genre').value.trim());
-    fd.append('platform', document.getElementById('form-platform').value.trim());
-    fd.append('release_year', document.getElementById('form-year').value);
-    fd.append('hours_played', document.getElementById('form-hours').value || 0);
-    fd.append('status', document.getElementById('form-status').value);
-    fd.append('notes', document.getElementById('form-notes').value.trim());
+    let image = currentGame?.cover_image ?? '';
+    if (formImage.files[0]) {
+        try {
+            image = await uploadImage(formImage.files[0]);
+        } catch (err) {
+            showToast('Error al subir la imagen', 'error');
+            return;
+        }
+    }
 
-    if (formImage.files[0]) fd.append('cover_image', formImage.files[0]);
+    const body = {
+        title:    document.getElementById('form-title').value.trim(),
+        dev:      document.getElementById('form-developer').value.trim(),
+        genre:    document.getElementById('form-genre').value.trim(),
+        platform: document.getElementById('form-platform').value.trim(),
+        release:  document.getElementById('form-year').value,
+        hours:    Number(document.getElementById('form-hours').value) || 0,
+        status:   document.getElementById('form-status').value,
+        notes:    document.getElementById('form-notes').value.trim(),
+        image,
+    };
 
     try {
-        await updateGame(gameId, fd);
+        await updateGame(gameId, body);
         closeModal();
         showToast('Juego actualizado', 'success');
         loadGame();

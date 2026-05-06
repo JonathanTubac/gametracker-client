@@ -1,5 +1,21 @@
 const API_URL = 'http://localhost:3000/api/v1';
 
+const CLOUDINARY_CLOUD_NAME = 'duzscodzj';
+const CLOUDINARY_UPLOAD_PRESET = 'GameTracker';
+
+export const uploadImage = async (file) => {
+    const fd = new FormData();
+    fd.append('file', file);
+    fd.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
+        method: 'POST',
+        body: fd,
+    });
+    if (!res.ok) throw new Error('Error al subir la imagen');
+    const json = await res.json();
+    return json.secure_url;
+};
+
 export const getGames = async ({ page, limit, q, sort, order }) => {
     const params = new URLSearchParams({ page, limit, q, sort, order });
     const res = await fetch(`${API_URL}/games?${params}`);
@@ -10,7 +26,8 @@ export const getGames = async ({ page, limit, q, sort, order }) => {
 export const getGameById = async (id_game) => {
     const res = await fetch(`${API_URL}/games/${id_game}`)
     if (!res.ok) throw new Error('Error fetching game')
-    return res.json();
+    const json = await res.json();
+    return json.data ?? json;
 }
 
 export const createGame = async (formData) => {
@@ -22,13 +39,15 @@ export const createGame = async (formData) => {
     return res.json();
 };
 
-export const updateGame = async (id, formData) => {
+export const updateGame = async (id, body) => {
     const res = await fetch(`${API_URL}/games/${id}`, {
         method: 'PUT',
-        body: formData
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
     });
     if (!res.ok) throw new Error('Error updating game');
-    return res.json();
+    const json = await res.json();
+    return json.data ?? json;
 };
 
 export const deleteGame = async (id) => {
@@ -39,23 +58,29 @@ export const deleteGame = async (id) => {
 };
 
 export const getRating = async (id) => {
-    const res = await fetch(`${API_URL}/games/${id}/rating`);
-    if (res.status === 404) return null;
-    return res.json();
+    try {
+        const res = await fetch(`${API_URL}/ratings/${id}`);
+        if (!res.ok) return null;
+        const json = await res.json();
+        return json.data ?? json;
+    } catch {
+        return null;
+    }
 };
 
 export const upsertRating = async (id, body) => {
-    const res = await fetch(`${API_URL}/games/${id}/rating`, {
+    const res = await fetch(`${API_URL}/ratings/${id}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
     });
     if (!res.ok) throw new Error('Error saving rating');
-    return res.json();
+    const json = await res.json();
+    return json.data ?? json;
 };
 
 export const deleteRating = async (id) => {
-    const res = await fetch(`${API_URL}/games/${id}/rating`, {
+    const res = await fetch(`${API_URL}/ratings/${id}`, {
         method: 'DELETE'
     });
     if (!res.ok) throw new Error('Error deleting rating');

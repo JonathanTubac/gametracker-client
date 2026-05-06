@@ -16,12 +16,12 @@
   <!-- NAVBAR -->
   <header class="navbar">
     <div class="navbar__brand">
-      <div class="navbar__logo">🎮</div>
+      <div class="navbar__logo"><i data-lucide="gamepad-2"></i></div>
       <span class="navbar__title">GameTracker</span>
     </div>
     <nav class="navbar__actions">
-      <button class="btn btn--ghost btn--sm" id="btn-export-csv">↓ Exportar CSV</button>
-      <button class="btn btn--primary btn--sm" id="btn-new-game">+ Nuevo juego</button>
+      <button class="btn btn--ghost btn--sm" id="btn-export-csv"><i data-lucide="download"></i> Exportar CSV</button>
+      <button class="btn btn--primary btn--sm" id="btn-new-game"><i data-lucide="plus"></i> Nuevo juego</button>
     </nav>
   </header>
 
@@ -34,7 +34,7 @@
       <div class="sidebar__section">
         <label class="sidebar__label">Buscar</label>
         <div class="search-wrapper">
-          <span class="search-icon">🔍</span>
+          <span class="search-icon"><i data-lucide="search"></i></span>
           <input
             type="text"
             id="search"
@@ -48,11 +48,11 @@
         <label class="sidebar__label">Estado</label>
         <div class="filter-chips" id="status-filters">
           <button class="chip chip--active" data-status="">Todos</button>
-          <button class="chip" data-status="playing">🕹️ Jugando</button>
-          <button class="chip" data-status="completed">✅ Completado</button>
-          <button class="chip" data-status="backlog">📦 Backlog</button>
-          <button class="chip" data-status="dropped">❌ Dropped</button>
-          <button class="chip" data-status="wishlist">⭐ Wishlist</button>
+          <button class="chip" data-status="playing"><i data-lucide="play"></i> Jugando</button>
+          <button class="chip" data-status="completed"><i data-lucide="check-circle"></i> Completado</button>
+          <button class="chip" data-status="backlog"><i data-lucide="archive"></i> Backlog</button>
+          <button class="chip" data-status="dropped"><i data-lucide="x-circle"></i> Dropped</button>
+          <button class="chip" data-status="wishlist"><i data-lucide="star"></i> Wishlist</button>
         </div>
       </div>
 
@@ -69,21 +69,21 @@
       <div class="sidebar__section">
         <label class="sidebar__label">Dirección</label>
         <div class="toggle-group">
-          <button class="toggle toggle--active" data-order="desc">↓ Desc</button>
-          <button class="toggle" data-order="asc">↑ Asc</button>
+          <button class="toggle toggle--active" data-order="desc"><i data-lucide="arrow-down"></i> Desc</button>
+          <button class="toggle" data-order="asc"><i data-lucide="arrow-up"></i> Asc</button>
         </div>
       </div>
 
       <div class="sidebar__stats">
         <div class="stat-card">
-          <span class="stat-card__icon">🎮</span>
+          <span class="stat-card__icon"><i data-lucide="gamepad-2"></i></span>
           <div>
             <p class="stat-card__value" id="stat-total">—</p>
             <p class="stat-card__label">Juegos</p>
           </div>
         </div>
         <div class="stat-card">
-          <span class="stat-card__icon">⏱️</span>
+          <span class="stat-card__icon"><i data-lucide="clock"></i></span>
           <div>
             <p class="stat-card__value" id="stat-hours">—</p>
             <p class="stat-card__label">Horas</p>
@@ -99,8 +99,8 @@
       <div class="toolbar">
         <p class="toolbar__count" id="results-count"></p>
         <div class="view-toggle">
-          <button class="view-btn view-btn--active" id="view-grid" title="Vista grid">⊞</button>
-          <button class="view-btn" id="view-list" title="Vista lista">☰</button>
+          <button class="view-btn view-btn--active" id="view-grid" title="Vista grid"><i data-lucide="layout-grid"></i></button>
+          <button class="view-btn" id="view-list" title="Vista lista"><i data-lucide="list"></i></button>
         </div>
       </div>
 
@@ -114,10 +114,10 @@
       </div>
 
       <div class="empty-state hidden" id="empty-state">
-        <p class="empty-state__icon">🕹️</p>
+        <p class="empty-state__icon"><i data-lucide="gamepad-2"></i></p>
         <h3>No hay juegos aquí</h3>
         <p>Agrega tu primer juego para empezar</p>
-        <button class="btn btn--primary" id="btn-empty-add">+ Nuevo juego</button>
+        <button class="btn btn--primary" id="btn-empty-add"><i data-lucide="plus"></i> Nuevo juego</button>
       </div>
 
       <div class="pagination" id="pagination"></div>
@@ -130,7 +130,7 @@
     <div class="modal" id="modal-game">
       <div class="modal__header">
         <h2 class="modal__title" id="modal-title">Nuevo juego</h2>
-        <button class="modal__close" id="modal-close" aria-label="Cerrar">✕</button>
+        <button class="modal__close" id="modal-close" aria-label="Cerrar"><i data-lucide="x"></i></button>
       </div>
 
       <form class="modal__form" id="game-form">
@@ -139,7 +139,7 @@
         <div class="form-row">
           <div class="cover-upload" id="cover-upload-area">
             <img id="cover-preview" src="/assets/placeholder.png" alt="Portada" />
-            <label class="cover-upload__label" for="form-image">📷 Cambiar</label>
+            <label class="cover-upload__label" for="form-image"><i data-lucide="camera"></i> Cambiar</label>
             <input type="file" id="form-image" accept="image/*" class="hidden" />
           </div>
 
@@ -179,11 +179,11 @@
         <div class="form-group">
           <label class="form-label" for="form-status">Estado</label>
           <select class="input input--select" id="form-status">
-            <option value="backlog">📦 Backlog</option>
-            <option value="playing">🕹️ Jugando</option>
-            <option value="completed">✅ Completado</option>
-            <option value="dropped">❌ Dropped</option>
-            <option value="wishlist">⭐ Wishlist</option>
+            <option value="backlog">Backlog</option>
+            <option value="playing">Jugando</option>
+            <option value="completed">Completado</option>
+            <option value="dropped">Dropped</option>
+            <option value="wishlist">Wishlist</option>
           </select>
         </div>
 
@@ -213,6 +213,7 @@
     <span id="toast-message"></span>
   </div>
 
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script type="module" src="/js/main.js"></script>
 </body>
 </html>
