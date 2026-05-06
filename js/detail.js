@@ -51,13 +51,10 @@ let currentGame = null;
 
 const loadGame = async () => {
     try {
-        console.log(gameId)
         const [game, rating] = await Promise.all([
             getGameById(gameId),
             getRating(gameId),
         ]);
-        console.log(game)
-        console.log(rating)
         currentGame = game;
         renderGame(game);
         renderRating(rating);
