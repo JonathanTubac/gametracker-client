@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GameTracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./css/components.css">
+  <link rel="stylesheet" href="./css/layout.css">
+  <link rel="stylesheet" href="./css/main.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="navbar__brand">
+      <div class="navbar__logo">🎮</div>
+      <span class="navbar__title">GameTracker</span>
+    </div>
+    <nav class="navbar__actions">
+      <button class="btn btn--ghost btn--sm" id="btn-export-csv">↓ Exportar CSV</button>
+      <button class="btn btn--primary btn--sm" id="btn-new-game">+ Nuevo juego</button>
+    </nav>
+  </header>
+
+  <!-- MAIN -->
+  <main class="main-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+      <div class="sidebar__section">
+        <label class="sidebar__label">Buscar</label>
+        <div class="search-wrapper">
+          <span class="search-icon">🔍</span>
+          <input
+            type="text"
+            id="search"
+            class="input input--search"
+            placeholder="Buscar juego..."
+          />
+        </div>
+      </div>
+
+      <div class="sidebar__section">
+        <label class="sidebar__label">Estado</label>
+        <div class="filter-chips" id="status-filters">
+          <button class="chip chip--active" data-status="">Todos</button>
+          <button class="chip" data-status="playing">🕹️ Jugando</button>
+          <button class="chip" data-status="completed">✅ Completado</button>
+          <button class="chip" data-status="backlog">📦 Backlog</button>
+          <button class="chip" data-status="dropped">❌ Dropped</button>
+          <button class="chip" data-status="wishlist">⭐ Wishlist</button>
+        </div>
+      </div>
+
+      <div class="sidebar__section">
+        <label class="sidebar__label">Ordenar por</label>
+        <select class="input input--select" id="sort-select">
+          <option value="created_at">Fecha agregado</option>
+          <option value="title">Título</option>
+          <option value="release_year">Año de lanzamiento</option>
+          <option value="hours_played">Horas jugadas</option>
+        </select>
+      </div>
+
+      <div class="sidebar__section">
+        <label class="sidebar__label">Dirección</label>
+        <div class="toggle-group">
+          <button class="toggle toggle--active" data-order="desc">↓ Desc</button>
+          <button class="toggle" data-order="asc">↑ Asc</button>
+        </div>
+      </div>
+
+      <div class="sidebar__stats">
+        <div class="stat-card">
+          <span class="stat-card__icon">🎮</span>
+          <div>
+            <p class="stat-card__value" id="stat-total">—</p>
+            <p class="stat-card__label">Juegos</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-card__icon">⏱️</span>
+          <div>
+            <p class="stat-card__value" id="stat-hours">—</p>
+            <p class="stat-card__label">Horas</p>
+          </div>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- CONTENT -->
+    <section class="content">
+
+      <div class="toolbar">
+        <p class="toolbar__count" id="results-count"></p>
+        <div class="view-toggle">
+          <button class="view-btn view-btn--active" id="view-grid" title="Vista grid">⊞</button>
+          <button class="view-btn" id="view-list" title="Vista lista">☰</button>
+        </div>
+      </div>
+
+      <div class="games-grid" id="games-grid">
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+      </div>
+
+      <div class="empty-state hidden" id="empty-state">
+        <p class="empty-state__icon">🕹️</p>
+        <h3>No hay juegos aquí</h3>
+        <p>Agrega tu primer juego para empezar</p>
+        <button class="btn btn--primary" id="btn-empty-add">+ Nuevo juego</button>
+      </div>
+
+      <div class="pagination" id="pagination"></div>
+
+    </section>
+  </main>
+
+  <!-- MODAL -->
+  <div class="modal-overlay hidden" id="modal-overlay">
+    <div class="modal" id="modal-game">
+      <div class="modal__header">
+        <h2 class="modal__title" id="modal-title">Nuevo juego</h2>
+        <button class="modal__close" id="modal-close" aria-label="Cerrar">✕</button>
+      </div>
+
+      <form class="modal__form" id="game-form">
+        <input type="hidden" id="form-id" />
+
+        <div class="form-row">
+          <div class="cover-upload" id="cover-upload-area">
+            <img id="cover-preview" src="/assets/placeholder.png" alt="Portada" />
+            <label class="cover-upload__label" for="form-image">📷 Cambiar</label>
+            <input type="file" id="form-image" accept="image/*" class="hidden" />
+          </div>
+
+          <div class="form-fields">
+            <div class="form-group">
+              <label class="form-label" for="form-title">Título *</label>
+              <input type="text" id="form-title" class="input" placeholder="ej. Hollow Knight" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="form-developer">Desarrollador</label>
+              <input type="text" id="form-developer" class="input" placeholder="ej. Team Cherry" />
+            </div>
+            <div class="form-row-2">
+              <div class="form-group">
+                <label class="form-label" for="form-genre">Género</label>
+                <input type="text" id="form-genre" class="input" placeholder="ej. RPG" />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="form-platform">Plataforma</label>
+                <input type="text" id="form-platform" class="input" placeholder="ej. PC" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label" for="form-year">Año</label>
+            <input type="number" id="form-year" class="input" placeholder="2024" min="1970" max="2099" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="form-hours">Horas jugadas</label>
+            <input type="number" id="form-hours" class="input" placeholder="0" min="0" step="0.5" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="form-status">Estado</label>
+          <select class="input input--select" id="form-status">
+            <option value="backlog">📦 Backlog</option>
+            <option value="playing">🕹️ Jugando</option>
+            <option value="completed">✅ Completado</option>
+            <option value="dropped">❌ Dropped</option>
+            <option value="wishlist">⭐ Wishlist</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Rating (0 – 10)</label>
+          <div class="rating-input">
+            <input type="range" id="form-score" min="0" max="10" step="0.5" value="0" />
+            <span class="rating-value" id="form-score-display">0</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="form-notes">Notas</label>
+          <textarea id="form-notes" class="input input--textarea" placeholder="Opiniones, progreso, lo que quieras..."></textarea>
+        </div>
+
+        <div class="modal__footer">
+          <button type="button" class="btn btn--outline" id="btn-cancel">Cancelar</button>
+          <button type="submit" class="btn btn--primary" id="btn-submit">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast hidden" id="toast">
+    <span id="toast-message"></span>
+  </div>
+
+  <script type="module" src="/js/main.js"></script>
+</body>
+</html>
