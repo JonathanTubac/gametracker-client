@@ -1,4 +1,5 @@
-const API_URL = 'http://localhost:3000/api/v1';
+import CONFIG from './config.js';
+const API_URL = CONFIG.API_URL;
 
 const CLOUDINARY_CLOUD_NAME = 'duzscodzj';
 const CLOUDINARY_UPLOAD_PRESET = 'GameTracker';
