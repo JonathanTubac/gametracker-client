@@ -16,8 +16,9 @@ export const uploadImage = async (file) => {
     return json.secure_url;
 };
 
-export const getGames = async ({ page, limit, q, sort, order }) => {
+export const getGames = async ({ page, limit, q, sort, order, status }) => {
     const params = new URLSearchParams({ page, limit, q, sort, order });
+    if (status) params.set('status', status);
     const res = await fetch(`${API_URL}/games?${params}`);
     if (!res.ok) throw new Error('Error fetching games');
     return res.json();
