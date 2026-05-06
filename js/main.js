@@ -16,7 +16,7 @@ const loadGames = async () => {
   const { data, totalPages, page } = await getGames(state);
 
   grid.innerHTML = '';
-  data.forEach(game => {
+  data.data.forEach(game => {
     const card = renderGameCard(game);
 
     card.querySelector('.btn--delete').addEventListener('click', async () => {
@@ -34,9 +34,9 @@ const loadGames = async () => {
   });
 
   paginationContainer.innerHTML = '';
-  const nav = renderPagination(page, totalPages);
-  nav.querySelector('#prev').addEventListener('click', () => { state.page--; loadGames(); });
-  nav.querySelector('#next').addEventListener('click', () => { state.page++; loadGames(); });
+  const nav = renderPagination(data.page, data.totalPages);
+  nav.querySelector('#prev').addEventListener('click', () => { state.data.page--; loadGames(); });
+  nav.querySelector('#next').addEventListener('click', () => { state.data.page++; loadGames(); });
   paginationContainer.appendChild(nav);
 };
 

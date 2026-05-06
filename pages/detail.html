@@ -1,11 +1,205 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GameTracker — Detalle</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="/css/layout.css" />
+  <link rel="stylesheet" href="/css/components.css" />
+  <link rel="stylesheet" href="/css/detail.css" />
 </head>
 <body>
-    <script type="module" src="/js/detail.js"></script>
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="navbar__brand">
+      <a href="/" class="navbar__back">← Volver</a>
+      <div class="navbar__logo">🎮</div>
+      <span class="navbar__title">GameTracker</span>
+    </div>
+    <nav class="navbar__actions">
+      <button class="btn btn--ghost btn--sm" id="btn-edit">✏️ Editar</button>
+      <button class="btn btn--danger btn--sm" id="btn-delete">🗑️ Eliminar</button>
+    </nav>
+  </header>
+
+  <!-- LOADING -->
+  <div class="detail-loading" id="detail-loading">
+    <div class="spinner"></div>
+    <p>Cargando juego...</p>
+  </div>
+
+  <!-- DETAIL CONTENT -->
+  <div class="detail-layout hidden" id="detail-content">
+
+    <!-- HERO -->
+    <div class="detail-hero" id="detail-hero">
+      <div class="detail-hero__cover-wrap">
+        <img id="detail-cover" class="detail-hero__cover" src="" alt="" />
+      </div>
+      <div class="detail-hero__overlay">
+        <div class="detail-hero__info">
+          <span class="badge" id="detail-status-badge"></span>
+          <h1 class="detail-hero__title" id="detail-title"></h1>
+          <p class="detail-hero__developer" id="detail-developer"></p>
+          <div class="detail-hero__meta" id="detail-meta"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BODY -->
+    <div class="detail-body">
+
+      <!-- STATS ROW -->
+      <div class="detail-stats">
+        <div class="detail-stat">
+          <span class="detail-stat__icon">⏱️</span>
+          <div>
+            <p class="detail-stat__value" id="detail-hours">—</p>
+            <p class="detail-stat__label">Horas jugadas</p>
+          </div>
+        </div>
+        <div class="detail-stat">
+          <span class="detail-stat__icon">📅</span>
+          <div>
+            <p class="detail-stat__value" id="detail-year">—</p>
+            <p class="detail-stat__label">Año</p>
+          </div>
+        </div>
+        <div class="detail-stat">
+          <span class="detail-stat__icon">🖥️</span>
+          <div>
+            <p class="detail-stat__value" id="detail-platform">—</p>
+            <p class="detail-stat__label">Plataforma</p>
+          </div>
+        </div>
+        <div class="detail-stat">
+          <span class="detail-stat__icon">🏷️</span>
+          <div>
+            <p class="detail-stat__value" id="detail-genre">—</p>
+            <p class="detail-stat__label">Género</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- NOTES -->
+      <div class="detail-section" id="section-notes">
+        <h2 class="detail-section__title">Notas</h2>
+        <p class="detail-section__text" id="detail-notes"></p>
+      </div>
+
+      <!-- RATING -->
+      <div class="detail-section">
+        <h2 class="detail-section__title">Mi rating</h2>
+
+        <div class="rating-display" id="rating-display">
+          <!-- Se rellena con JS -->
+        </div>
+
+        <div class="rating-form" id="rating-form">
+          <div class="rating-input">
+            <input type="range" id="rating-score" min="0" max="10" step="0.5" value="0" />
+            <span class="rating-value" id="rating-score-display">0</span>
+            <span class="rating-label">/ 10</span>
+          </div>
+          <textarea
+            id="rating-review"
+            class="input input--textarea"
+            placeholder="¿Qué te pareció el juego?"
+            rows="3"
+          ></textarea>
+          <div class="rating-form__actions">
+            <button class="btn btn--outline btn--sm" id="btn-delete-rating">Quitar rating</button>
+            <button class="btn btn--primary btn--sm" id="btn-save-rating">Guardar rating</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- EDIT MODAL (reutiliza el mismo del index) -->
+  <div class="modal-overlay hidden" id="modal-overlay">
+    <div class="modal">
+      <div class="modal__header">
+        <h2 class="modal__title">Editar juego</h2>
+        <button class="modal__close" id="modal-close">✕</button>
+      </div>
+      <form class="modal__form" id="game-form">
+        <input type="hidden" id="form-id" />
+
+        <div class="form-row">
+          <div class="cover-upload">
+            <img id="cover-preview" src="/assets/placeholder.png" alt="Portada" />
+            <label class="cover-upload__label" for="form-image">📷 Cambiar</label>
+            <input type="file" id="form-image" accept="image/*" class="hidden" />
+          </div>
+          <div class="form-fields">
+            <div class="form-group">
+              <label class="form-label">Título *</label>
+              <input type="text" id="form-title" class="input" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Desarrollador</label>
+              <input type="text" id="form-developer" class="input" />
+            </div>
+            <div class="form-row-2">
+              <div class="form-group">
+                <label class="form-label">Género</label>
+                <input type="text" id="form-genre" class="input" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Plataforma</label>
+                <input type="text" id="form-platform" class="input" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label">Año</label>
+            <input type="number" id="form-year" class="input" min="1970" max="2099" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Horas jugadas</label>
+            <input type="number" id="form-hours" class="input" min="0" step="0.5" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Estado</label>
+          <select class="input input--select" id="form-status">
+            <option value="backlog">📦 Backlog</option>
+            <option value="playing">🕹️ Jugando</option>
+            <option value="completed">✅ Completado</option>
+            <option value="dropped">❌ Dropped</option>
+            <option value="wishlist">⭐ Wishlist</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Notas</label>
+          <textarea id="form-notes" class="input input--textarea"></textarea>
+        </div>
+
+        <div class="modal__footer">
+          <button type="button" class="btn btn--outline" id="btn-cancel">Cancelar</button>
+          <button type="submit" class="btn btn--primary">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast hidden" id="toast">
+    <span id="toast-message"></span>
+  </div>
+
+  <script type="module" src="/js/detail.js"></script>
 </body>
 </html>
