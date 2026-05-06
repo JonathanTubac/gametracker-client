@@ -14,6 +14,7 @@ const grid             = document.getElementById('games-grid');
 const paginationEl     = document.getElementById('pagination');
 const emptyState       = document.getElementById('empty-state');
 const statTotal        = document.getElementById('stat-total');
+const statHours        = document.getElementById('stat-hours');
 
 const loadGames = async () => {
   try {
@@ -46,6 +47,7 @@ const loadGames = async () => {
     }
 
     statTotal.textContent = data.total ?? '—';
+    statHours.textContent = data.totalHours != null ? `${data.totalHours}h` : '—';
 
     paginationEl.innerHTML = '';
     if (data.totalPages > 1) {
