@@ -19,22 +19,26 @@ export const renderGameCard = (game) => {
   card.className = 'game-card';
   const label = STATUS_LABELS[game.status] ?? game.status;
   const icon  = STATUS_ICONS[game.status] ?? 'circle';
+  const cover = game.cover_image || '/assets/placeholder.png';
+
   card.innerHTML = `
-    <img src="${game.cover_image || '/assets/placeholder.png'}" alt="${game.title}" />
-    <div class="card-body">
-      <h3>${game.title}</h3>
+    <img class="game-card__cover" src="${cover}" alt="${game.title}" />
+    <div class="game-card__body">
+      <p class="game-card__title">${game.title}</p>
+      <p class="game-card__meta">${game.developer || '&nbsp;'}</p>
+    </div>
+    <div class="game-card__footer">
       <span class="badge badge--${game.status}">
         <i data-lucide="${icon}"></i> ${label}
       </span>
-      <p>${game.developer || ''}</p>
-    </div>
-    <div class="card-actions">
-      <button class="btn btn--edit" data-id="${game.id}">
-        <i data-lucide="pencil"></i> Editar
-      </button>
-      <button class="btn btn--delete" data-id="${game.id}">
-        <i data-lucide="trash-2"></i> Eliminar
-      </button>
+      <div class="game-card__actions">
+        <button class="icon-btn btn--edit" data-id="${game.id}" title="Ver detalle">
+          <i data-lucide="eye"></i>
+        </button>
+        <button class="icon-btn icon-btn--danger btn--delete" data-id="${game.id}" title="Eliminar">
+          <i data-lucide="trash-2"></i>
+        </button>
+      </div>
     </div>
   `;
   return card;
