@@ -24,6 +24,14 @@ export const getGames = async ({ page, limit, q, sort, order, status }) => {
     return res.json();
 };
 
+export const exportGames = async () => {
+    const params = new URLSearchParams({ page: 1, limit: 9999, sort: 'title', order: 'asc' });
+    const res = await fetch(`${API_URL}/games?${params}`);
+    if (!res.ok) throw new Error('Error al exportar');
+    const json = await res.json();
+    return json.data?.data ?? [];
+};
+
 export const getGameById = async (id_game) => {
     const res = await fetch(`${API_URL}/games/${id_game}`)
     if (!res.ok) throw new Error('Error fetching game')

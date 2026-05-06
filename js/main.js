@@ -1,4 +1,4 @@
-import { getGames, deleteGame, createGame, uploadImage } from './api.js';
+import { getGames, deleteGame, createGame, uploadImage, exportGames } from './api.js';
 import { renderGameCard, renderPagination } from './render.js';
 
 let state = {
@@ -208,6 +208,31 @@ document.getElementById('view-list').addEventListener('click', () => {
   grid.classList.add('games-grid--list');
   document.getElementById('view-list').classList.add('view-btn--active');
   document.getElementById('view-grid').classList.remove('view-btn--active');
+});
+
+/* ---- Exportar CSV ---- */
+const toCSV = (games) => {
+  const cols    = ['id', 'title', 'developer', 'genre', 'platform', 'release_year', 'status', 'hours_played', 'notes'];
+  const headers = ['ID', 'Título', 'Desarrollador', 'Género', 'Plataforma', 'Año', 'Estado', 'Horas jugadas', 'Notas'];
+  const esc = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
+  const rows = games.map(g => cols.map(c => typeof g[c] === 'string' ? esc(g[c]) : (g[c] ?? '')).join(','));
+  return [headers.join(','), ...rows].join('\n');
+};
+
+document.getElementById('btn-export-csv').addEventListener('click', async () => {
+  try {
+    const games = await exportGames();
+    const blob  = new Blob(['﻿' + toCSV(games)], { type: 'text/csv;charset=utf-8;' });
+    const url   = URL.createObjectURL(blob);
+    const a     = document.createElement('a');
+    a.href      = url;
+    a.download  = `gametracker-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('CSV exportado', 'success');
+  } catch {
+    showToast('Error al exportar', 'error');
+  }
 });
 
 loadGames();
