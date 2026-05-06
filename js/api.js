@@ -71,7 +71,7 @@ export const deleteGame = async (id) => {
 
 export const getRating = async (id) => {
     try {
-        const res = await fetch(`${API_URL}/${id}/rating`);
+        const res = await fetch(`${API_URL}/games/${id}/rating`);
         if (!res.ok) return null;
         const json = await res.json();
         return json.data ?? json;
@@ -81,7 +81,7 @@ export const getRating = async (id) => {
 };
 
 export const upsertRating = async (id, body) => {
-    const res = await fetch(`${API_URL}/${id}/rating`, {
+    const res = await fetch(`${API_URL}/games/${id}/rating`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
@@ -92,7 +92,7 @@ export const upsertRating = async (id, body) => {
 };
 
 export const deleteRating = async (id) => {
-    const res = await fetch(`${API_URL}/${id}/rating`, {
+    const res = await fetch(`${API_URL}/games/${id}/rating`, {
         method: 'DELETE'
     });
     if (!res.ok) throw new Error('Error deleting rating');
