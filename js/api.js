@@ -31,13 +31,15 @@ export const getGameById = async (id_game) => {
     return json.data ?? json;
 }
 
-export const createGame = async (formData) => {
+export const createGame = async (body) => {
     const res = await fetch(`${API_URL}/games`, {
         method: 'POST',
-        body: formData // FormData para manejar imágenes
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
     });
     if (!res.ok) throw new Error('Error creating game');
-    return res.json();
+    const json = await res.json();
+    return json.data ?? json;
 };
 
 export const updateGame = async (id, body) => {
