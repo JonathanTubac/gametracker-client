@@ -6,8 +6,8 @@ A personal game library tracker built with vanilla HTML, CSS, and JavaScript. Tr
 
 | Resource | URL |
 |---|---|
-| Frontend (Vercel) | https://gametracker-client.vercel.app/health |
-| Backend API (Vercel) | https://gametracker-api.vercel.app |
+| Frontend (Vercel) | https://gametracker-client.vercel.app |
+| Backend API (Vercel) | https://gametracker-api.vercel.app/health |
 
 ## Backend Repository
 
