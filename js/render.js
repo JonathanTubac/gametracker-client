@@ -45,12 +45,27 @@ export const renderGameCard = (game) => {
 };
 
 export const renderPagination = (page, totalPages) => {
-  const nav = document.createElement('div');
-  nav.className = 'pagination';
-  nav.innerHTML = `
-    <button id="prev" ${page <= 1 ? 'disabled' : ''}><i data-lucide="chevron-left"></i></button>
-    <span>Página ${page} de ${totalPages}</span>
-    <button id="next" ${page >= totalPages ? 'disabled' : ''}><i data-lucide="chevron-right"></i></button>
-  `;
-  return nav;
+  const frag = document.createDocumentFragment();
+
+  const prev = document.createElement('button');
+  prev.id = 'prev';
+  prev.className = 'page-btn';
+  prev.disabled = page <= 1;
+  prev.innerHTML = '<i data-lucide="chevron-left"></i>';
+
+  const info = document.createElement('span');
+  info.className = 'page-info';
+  info.textContent = `Página ${page} de ${totalPages}`;
+
+  const next = document.createElement('button');
+  next.id = 'next';
+  next.className = 'page-btn';
+  next.disabled = page >= totalPages;
+  next.innerHTML = '<i data-lucide="chevron-right"></i>';
+
+  frag.appendChild(prev);
+  frag.appendChild(info);
+  frag.appendChild(next);
+
+  return frag;
 };

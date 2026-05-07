@@ -3,7 +3,7 @@ import { renderGameCard, renderPagination } from './render.js';
 
 let state = {
   page: 1,
-  limit: 12,
+  limit: 10,
   q: '',
   status: '',
   sort: 'created_at',
@@ -147,8 +147,9 @@ const loadGames = async () => {
     statHours.textContent = data.totalHours != null ? `${data.totalHours}h` : '—';
 
     paginationEl.innerHTML = '';
-    if (data.totalPages > 1) {
-      const nav = renderPagination(data.page, data.totalPages);
+    const totalPages = data.totalPages ?? Math.ceil((data.total ?? 0) / state.limit);
+    if (totalPages > 1) {
+      const nav = renderPagination(data.page ?? state.page, totalPages);
       nav.querySelector('#prev').addEventListener('click', () => { state.page--; loadGames(); });
       nav.querySelector('#next').addEventListener('click', () => { state.page++; loadGames(); });
       paginationEl.appendChild(nav);
