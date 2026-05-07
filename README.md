@@ -15,6 +15,16 @@ A personal game library tracker built with vanilla HTML, CSS, and JavaScript. Tr
 
 ---
 
+## Completed Challenges
+
+| Challenge | Points |
+|---|---|
+| Export game list to CSV — generated manually from JavaScript, no libraries. File downloads from the browser. | 20 |
+| Rating system — REST endpoints (`POST /games/:id/rating`, `GET /games/:id/rating`, `DELETE /games/:id/rating`), visible in the client with star display and review text. | 30 |
+| Image upload support via Cloudinary (max ~1 MB per image). | 30 |
+
+---
+
 ## Features
 
 - Add, edit, and delete games from your library
