@@ -2,6 +2,15 @@
 
 A personal game library tracker built with vanilla HTML, CSS, and JavaScript. Track your games by status, rate them, log hours played, and export your list to CSV.
 
+## Screenshots
+
+| | |
+|---|---|
+| ![Game list – grid view](screenshots/game_grid.PNG) |
+| ![Game detail](screenshots/game_detail.PNG) | ![Add game modal](screenshots/add_game.PNG) |
+
+---
+
 ## Live Demo
 
 | Resource | URL |
@@ -136,6 +145,22 @@ The app will be available at **http://localhost:8080**.
 | Stop the container | `docker stop gametracker-front` |
 | Remove the container | `docker rm gametracker-front` |
 | Rebuild after changes | `docker compose up -d --build` |
+
+---
+
+## Tech Reflection
+
+### Would we use this stack again?
+
+**Vanilla JS — yes, with caveats.** Keeping the frontend dependency-free made the project fast to start and easy to deploy anywhere. There was no build step, no bundler config to fight, and the Docker image stayed tiny. The real friction showed up around state management: as features grew (filters, sorting, pagination, modals all living on the same page), keeping the UI in sync with application state became increasingly manual. A lightweight library like Alpine.js or even a simple reactive store would have saved a lot of repetitive DOM queries without adding meaningful complexity.
+
+**nginx for static files — yes, no reservations.** It did exactly what it needed to and required almost no configuration. Serving ES modules with correct MIME types just worked.
+
+**Cloudinary — yes.** The free tier covered the project's needs, and offloading image storage and transformation to a CDN meant zero server-side file handling. The main catch was the ~1 MB upload limit imposed by Vercel's function payload cap on the backend side, not Cloudinary itself.
+
+**Docker — yes.** Wrapping nginx in a container made local development and deployment identical, which eliminated a whole class of "works on my machine" issues. The compose setup made it trivial to share a reproducible environment.
+
+**Biggest challenge:** coordinating UI state across multiple async operations (loading a game list, applying a filter, and uploading an image can all race each other) without a reactive framework required careful sequencing and more defensive rendering code than anticipated. If the project were to grow significantly, this would be the first thing to revisit.
 
 ---
 
